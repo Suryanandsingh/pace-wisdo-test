@@ -1,8 +1,9 @@
-import { EMPLOYEES_LIST } from "../types"
+import { EMPLOYEES_LIST, EMPLOYEES_EVENT, TOGGLE_EMPLOYEES_EVENT } from "../types"
 
 
 const initialState = {
-    employees:[]
+    employees:[],
+    isEventEmployee: false
 }
 
 export default (state=initialState, action)=>{
@@ -11,6 +12,16 @@ export default (state=initialState, action)=>{
             return{
                 ...state,
                 employees: action.payload
+            }
+        case EMPLOYEES_EVENT:
+            return{
+                ...state,
+                isEventEmployee: action.payload
+            }
+        case TOGGLE_EMPLOYEES_EVENT:
+            return{
+                ...state,
+                isEventEmployee: false
             }
         default:
             return state;

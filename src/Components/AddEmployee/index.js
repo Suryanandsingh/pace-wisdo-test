@@ -3,8 +3,6 @@ import {
     KeyboardAvoidingView, 
     View,
     Text, 
-    Image,
-    ScrollView, 
     TextInput, 
     TouchableOpacity,
     Platform,
@@ -15,15 +13,12 @@ import ImagePicker from 'react-native-image-picker';
 import Geolocation from  '@react-native-community/geolocation'
 import Style from '../Style';
 import Statusbar from '../Statusbar';
-import { setEmployeesList } from '../../Redux/Actions/employee';
+import { setEmployeesList, toggleEventEmployee, getEmployeesList } from '../../Redux/Actions/employee';
 import { NAME, MAIL, PHONE, BLACK } from '../../Utils/constant';
+import Toast from '../Toast';
 
 const avatrOptions = {
     title: 'Select Avatar',
-    storageOptions: {
-      skipBackup: true,
-      path: 'images',
-    },
 };
 
 const AddEmployee = ({ navigation }) => {
@@ -33,11 +28,24 @@ const AddEmployee = ({ navigation }) => {
     const [ address, setAddress ] = useState('');
     const [ image, setImage ] = useState('');
     const [ showImageText, setShowImageText ] = useState('');
-    const [ currentLongitude, setCurrentLongitude ] = useState('23.87');
-    const [ currentLatitude, setCurrentLatitude ] = useState('54.21');
+    const [ currentLongitude, setCurrentLongitude ] = useState('');
+    const [ currentLatitude, setCurrentLatitude ] = useState('');
     const dispatch = useDispatch();
+    const isEventEmployee = useSelector(state=>state.Employee.isEventEmployee);
+    const toast = useSelector(state=>state.Loader.toast);
+    if(isEventEmployee && !toast){
+        dispatch(getEmployeesList());
+        navigation.navigate('Home');
+    }
     useEffect(()=>{
-        // permissionView();
+        try {
+            permissionView();
+        } catch (err) {
+            console.log(err)
+        }
+        return()=>{
+            dispatch(toggleEventEmployee());
+        }
     }, []);
     function permissionView(){
         if(Platform.OS === 'ios'){
@@ -110,6 +118,7 @@ const AddEmployee = ({ navigation }) => {
             alert('Select Profile image')
         }else{
             var data = {
+                id: 12,
                 name: name,
                 email: email,
                 phone: phone,
@@ -117,7 +126,7 @@ const AddEmployee = ({ navigation }) => {
                 long: currentLongitude,
                 lati: currentLatitude
             }
-            dispatch(setEmployeesList());
+            dispatch(setEmployeesList(data));
         }
     }
     function _formsDetails() {
@@ -155,6 +164,7 @@ const AddEmployee = ({ navigation }) => {
                     onChangeText={(text)=>setAddress(text)}
                     value={address}
                 />
+                
                 <View style={Style.uploadImageView} >
                     <Text style={{fontSize: 18, color: BLACK}} >Image</Text>
                     <TouchableOpacity 
@@ -182,12 +192,13 @@ const AddEmployee = ({ navigation }) => {
         )
     }
     return(
-        <KeyboardAvoidingView style={Style.baseColor}>
+        <KeyboardAvoidingView  style={Style.baseColor}>
             <Statusbar/>
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <>
                 {_title()}
                 {_formsDetails()}
-            </ScrollView>
+                <Toast color={"green"}/>
+            </>
         </KeyboardAvoidingView>
     )
 }

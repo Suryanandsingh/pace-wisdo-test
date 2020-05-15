@@ -74,7 +74,7 @@ export default StyleSheet.create({
     textInput:{
         backgroundColor: '#f8f8f8',
         width: '100%',
-        height: '17%',
+        height: '9.5%',
         padding: 7,
         paddingHorizontal: 10,
         fontSize: 18,
@@ -89,12 +89,12 @@ export default StyleSheet.create({
         padding: 7,
         paddingHorizontal: 10,
         width:'100%',
-        height:'15%'
+        height:'9.5%'
     },
     Submit:{
         backgroundColor: '#f2f2f2',
         width: '50%',
-        height: '15%',
+        height: '9.5%',
         justifyContent:'center',
         alignItems:'center',
         marginVertical: 15,
@@ -110,6 +110,40 @@ export default StyleSheet.create({
                 elevation: 4
             }
         })
+    },
+    ToastStyle:{
+        position:'absolute',
+        bottom: 0,
+        right: 0,
+        left: 0,
+        height: 80,
+        paddingHorizontal: 15,
+        backgroundColor: '#f2f2f2',
+        justifyContent: 'center',
+        alignItems:'flex-start',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        ...Platform.select({
+            ios:{
+                shadowColor: '#f2f2f2',
+                shadowOffset: {width: 0, height: -2},
+                shadowOpacity: 1, 
+                shadowRadius: 1
+            },
+            android:{
+                elevation: 3
+            }
+        })
+    },
+    deleteView:{
+        position:'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: 'rgba(255, 0, 0, 0.7)',
+        alignItems:'center',
+        justifyContent:'center',
+        height: '7%'
     }
 
 })
