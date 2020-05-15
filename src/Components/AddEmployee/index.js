@@ -72,16 +72,18 @@ const AddEmployee = ({ navigation }) => {
         }    
     }
     function callLocation(){
-        Geolocation.getCurrentPosition(
-            (position) => {
-                const currentLongitude = JSON.stringify(position.coords.longitude);
-                const currentLatitude = JSON.stringify(position.coords.latitude);
-                setCurrentLatitude(currentLatitude);
-                setCurrentLongitude(currentLongitude);
-            },
-            // (error) => alert(error.message),
-            // { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-        )
+        try{
+            Geolocation.getCurrentPosition(
+                (position) => {
+                    const currentLongitude = JSON.stringify(position.coords.longitude);
+                    const currentLatitude = JSON.stringify(position.coords.latitude);
+                    setCurrentLatitude(currentLatitude);
+                    setCurrentLongitude(currentLongitude);
+                },
+            )
+        }catch(err){
+            console.log('error', err)
+        }
     }
     function _title(){
         return(

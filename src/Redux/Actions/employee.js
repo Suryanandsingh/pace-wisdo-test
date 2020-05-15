@@ -10,7 +10,7 @@ export function getEmployeesList(){
         axios.get(url).then(res=>{
             dispatch({
                 type: EMPLOYEES_LIST,
-                payload: res.data
+                payload: res.data.reverse()
             })
         }).catch(err=>{
             console.log('errors', err.response.data)

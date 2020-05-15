@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteEmployee, toggleEventEmployee, getEmployeesList } from '../../Redux/Actions/employee';
 import Style from '../Style';
 import Toast from '../Toast';
+import Geocoder from 'react-native-geocoding';
+import { GOOGLE_API } from '../../Utils/constant';
 
 const EmployeeProfile = ({ route, navigation }) =>{
     const [employeeDetails, setEmployeeDetails] = useState(route.params.employee);
@@ -12,6 +14,14 @@ const EmployeeProfile = ({ route, navigation }) =>{
     const toast = useSelector(state=>state.Loader.toast);
     const dispatch = useDispatch();
     useEffect(()=>{
+        try {
+            Geocoder.init(GOOGLE_API);
+            Geocoder.form(employeeDetails.lati, employeeDetails.long).then(res=>{
+            console.log('red', res)
+        })
+        } catch (error) {
+            console.log(error)
+        }
         return()=>{
             dispatch(toggleEventEmployee());
         }
